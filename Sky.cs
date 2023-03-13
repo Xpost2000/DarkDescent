@@ -3,24 +3,22 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 /*
- * As far as I'm concerned this game is always taking
- * place in Hell.
- * 
- * So this is the only sky I need....
- * 
- * This isn't a skybox, it's more like a classic Doom sky...
- * 
- * TODO: make this sky influence the global directional lighting...
  */
 namespace DarkDescent {
-    /* But maybe I might consider other skies. */
-    internal class DemonSky {
+    internal class Sky {
         private Effect m_effect;
         private Texture m_texture;
+
+        /*
+         * I should really only have to share one VBO but okay,
+         * it's not a big deal.
+         * 
+         * Just don't want to refactor this right now.
+         */
         private VertexBuffer m_sky_vbo;
-        public DemonSky(GraphicsDevice device, ContentManager content) {
-            m_effect = content.Load<Effect>("HellSkyEffect");
-            m_texture = content.Load<Texture2D>("lavasky1");
+        public Sky(GraphicsDevice device, ContentManager content, string sky_effect, string sky_texture) {
+            m_effect = content.Load<Effect>(sky_effect);
+            m_texture = content.Load<Texture2D>(sky_texture);
             m_sky_vbo = new VertexBuffer(
                 device, 
                 VertexPositionColorNormalTexture.VertexDeclaration, 

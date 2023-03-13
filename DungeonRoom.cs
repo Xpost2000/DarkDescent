@@ -27,11 +27,6 @@ namespace DarkDescent {
         static readonly float TileHalfSize = 0.5f;
         
         // Graphical Resources (per material type)
-        private Texture2D m_floor_texture;
-        private Texture2D m_ceiling_texture;
-        private Texture2D m_wall_texture;
-        private Texture2D m_stone_texture;
-
         private VertexBuffer m_floor_vbo;
         private VertexBuffer m_ceiling_vbo;
         private VertexBuffer m_wall_vbo;
@@ -47,24 +42,6 @@ namespace DarkDescent {
             this.m_width = width;
             this.m_height = height;
             this.m_dungeon_layout = new int[this.m_width * this.m_height];
-        }
-        public Texture2D FloorTexture {
-            get { return m_floor_texture; }
-            set { m_floor_texture = value; }
-        }
-        public Texture2D CeilingTexture {
-            get { return m_ceiling_texture; }
-            set { m_ceiling_texture = value; }
-        }
-
-        public Texture2D WallTexture {
-            get { return m_wall_texture; }
-            set { m_wall_texture = value; }
-        }
-
-        public Texture2D StoneTexture {
-            get { return m_stone_texture; }
-            set { m_stone_texture = value; }
         }
 
         public int Width {
@@ -159,7 +136,7 @@ namespace DarkDescent {
                                     position + new Vector3(0.0f, TileHalfSize, 0.0f),
                                     Vector3.UnitY,
                                     Vector3.UnitZ,
-                                    Color.White,
+                                    Color.DarkGray,
                                     TileHalfSize
                                 )
                             );
@@ -254,34 +231,34 @@ namespace DarkDescent {
         }
 
         /* Effect is for the shader I guess */
-        public void DrawDungeonLayoutMeshes(GraphicsDevice graphics_device, BasicEffect basic_effect) {
+        public void DrawDungeonLayoutMeshes(GraphicsDevice graphics_device, BasicEffect basic_effect, EnvironmentThemeSet theme) {
             RegenerateMeshesForDungeon(graphics_device);
 
             // This is basically a cheap material system but okay.
             if (m_floor_vbo != null) {
                 basic_effect.CurrentTechnique.Passes[0].Apply();
-                basic_effect.Texture = m_floor_texture;
+                basic_effect.Texture = theme.Floor;
                 graphics_device.SetVertexBuffer(m_floor_vbo);
                 graphics_device.DrawPrimitives(PrimitiveType.TriangleList, 0, m_floor_vbo.VertexCount);
             }
 
             if (m_ceiling_vbo != null) {
                 basic_effect.CurrentTechnique.Passes[0].Apply();
-                basic_effect.Texture = m_ceiling_texture;
+                basic_effect.Texture = theme.Ceiling;
                 graphics_device.SetVertexBuffer(m_ceiling_vbo);
                 graphics_device.DrawPrimitives(PrimitiveType.TriangleList, 0, m_ceiling_vbo.VertexCount);
             }
 
             if (m_wall_vbo != null) {
                 basic_effect.CurrentTechnique.Passes[0].Apply();
-                basic_effect.Texture = m_wall_texture;
+                basic_effect.Texture = theme.Wall;
                 graphics_device.SetVertexBuffer(m_wall_vbo);
                 graphics_device.DrawPrimitives(PrimitiveType.TriangleList, 0, m_wall_vbo.VertexCount);
             }
 
             if (m_stone_vbo != null) {
                 basic_effect.CurrentTechnique.Passes[0].Apply();
-                basic_effect.Texture = m_stone_texture;
+                basic_effect.Texture = theme.Stone;
                 graphics_device.SetVertexBuffer(m_stone_vbo);
                 graphics_device.DrawPrimitives(PrimitiveType.TriangleList, 0, m_stone_vbo.VertexCount);
             }
