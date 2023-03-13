@@ -236,29 +236,29 @@ namespace DarkDescent {
 
             // This is basically a cheap material system but okay.
             if (m_floor_vbo != null) {
-                basic_effect.CurrentTechnique.Passes[0].Apply();
                 basic_effect.Texture = theme.Floor;
+                basic_effect.CurrentTechnique.Passes[0].Apply();
                 graphics_device.SetVertexBuffer(m_floor_vbo);
                 graphics_device.DrawPrimitives(PrimitiveType.TriangleList, 0, m_floor_vbo.VertexCount);
             }
 
             if (m_ceiling_vbo != null) {
-                basic_effect.CurrentTechnique.Passes[0].Apply();
                 basic_effect.Texture = theme.Ceiling;
+                basic_effect.CurrentTechnique.Passes[0].Apply();
                 graphics_device.SetVertexBuffer(m_ceiling_vbo);
                 graphics_device.DrawPrimitives(PrimitiveType.TriangleList, 0, m_ceiling_vbo.VertexCount);
             }
 
             if (m_wall_vbo != null) {
-                basic_effect.CurrentTechnique.Passes[0].Apply();
                 basic_effect.Texture = theme.Wall;
+                basic_effect.CurrentTechnique.Passes[0].Apply();
                 graphics_device.SetVertexBuffer(m_wall_vbo);
                 graphics_device.DrawPrimitives(PrimitiveType.TriangleList, 0, m_wall_vbo.VertexCount);
             }
 
             if (m_stone_vbo != null) {
-                basic_effect.CurrentTechnique.Passes[0].Apply();
                 basic_effect.Texture = theme.Stone;
+                basic_effect.CurrentTechnique.Passes[0].Apply();
                 graphics_device.SetVertexBuffer(m_stone_vbo);
                 graphics_device.DrawPrimitives(PrimitiveType.TriangleList, 0, m_stone_vbo.VertexCount);
             }

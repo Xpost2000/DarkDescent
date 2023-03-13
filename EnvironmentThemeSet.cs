@@ -8,27 +8,22 @@ namespace DarkDescent {
      * Not totally that elegant but it should work fine for quickly theming stuff.
      */
     internal class EnvironmentThemeSet {
-        private Texture2D m_floor_texture;
-        private Texture2D m_ceiling_texture;
-        private Texture2D m_wall_texture;
-        private Texture2D m_stone_texture;
-        private Sky m_sky;
+        private readonly Texture2D m_floor_texture;
+        private readonly Texture2D m_ceiling_texture;
+        private readonly Texture2D m_wall_texture;
+        private readonly Texture2D m_stone_texture;
+        private readonly Sky m_sky;
 
         public EnvironmentThemeSet(
             ContentManager content,
             GraphicsDevice device,
-            string floor_texture,
-            string ceiling_texture,
-            string wall_texture,
-            string stone_texture,
-            string sky_effect,
-            string sky_texture
+            string environment_path
             ) {
-            m_floor_texture = content.Load<Texture2D>(floor_texture);
-            m_ceiling_texture = content.Load<Texture2D>(ceiling_texture);
-            m_wall_texture = content.Load<Texture2D>(wall_texture);
-            m_stone_texture = content.Load<Texture2D>(stone_texture);
-            m_sky = new Sky(device, content, sky_effect, sky_texture);
+            m_floor_texture = content.Load<Texture2D>(environment_path + "\\floor");
+            m_ceiling_texture = content.Load<Texture2D>(environment_path + "\\ceiling");
+            m_wall_texture = content.Load<Texture2D>(environment_path + "\\wall");
+            m_stone_texture = content.Load<Texture2D>(environment_path + "\\stone");
+            m_sky = new Sky(device, content, environment_path + "\\SkyEffect", environment_path + "\\sky");
         }
 
         public Texture2D Ceiling {

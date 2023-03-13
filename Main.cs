@@ -14,6 +14,12 @@ namespace DarkDescent {
     /*
      * All engine units are relative to a tile block.
      */
+    public enum EnvironmentType {
+        Earth = 0,
+        Hell = 1,
+        Cocytus = 2,
+        Count = 3,
+    }
     public class Main : Game {
         // Should be resolution independent NOTE:
         private static readonly int RenderTarget_Width = 320;
@@ -27,7 +33,8 @@ namespace DarkDescent {
         private VertexBuffer m_postprocess_quad_vbo;
         private RenderTarget2D m_render_target;
         private RasterizerState world_rendering_rasterizer_state;
-        private EnvironmentThemeSet m_theme_set;
+        private EnvironmentThemeSet[] m_theme_sets;
+        private EnvironmentType m_current_environment_type = EnvironmentType.Earth;
 
         private Texture2D m_white_texture;
         private float m_total_elapsed_time = 0.0f;
@@ -102,15 +109,13 @@ namespace DarkDescent {
         }
 
         private void InitializeEnvironmentSets() {
-            m_theme_set = new EnvironmentThemeSet(
-            Content, GraphicsDevice,
-            "floor",
-            "ceiling",
-            "wall",
-            "stone",
-            "HellSkyEffect",
-            "lavasky1"
-            );
+            m_theme_sets = new EnvironmentThemeSet[(int)EnvironmentType.Count];
+            string[] themeset_strings = {
+                "env_earth", "env_hell", "env_cocytus"
+            };
+            for (int i = 0; i < m_theme_sets.Length; i++) {
+                m_theme_sets[i] = new EnvironmentThemeSet(Content, GraphicsDevice, themeset_strings[i]);
+            }
         }
 
         protected override void LoadContent() {
@@ -153,7 +158,11 @@ namespace DarkDescent {
 
         private void GameUpdate(float dt) {
             if (Input.KeyPressedThenReleased(Keys.D1)) {
-                Exit();
+                m_current_environment_type = EnvironmentType.Hell;
+            } else if (Input.KeyPressedThenReleased(Keys.D2)) {
+                m_current_environment_type = EnvironmentType.Cocytus;
+            } else if (Input.KeyPressedThenReleased(Keys.D3)) {
+                m_current_environment_type = EnvironmentType.Earth;
             }
 
             m_player.Update(m_test_dungeon, dt);
@@ -172,9 +181,11 @@ namespace DarkDescent {
             {
                 GraphicsDevice.Clear(Color.DarkBlue);
                 GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+
+                EnvironmentThemeSet current_theme = m_theme_sets[(int)m_current_environment_type];
                 // Draw the sky
                 {
-                    Sky current_sky = m_theme_set.Sky;
+                    Sky current_sky = current_theme.Sky;
                     current_sky.SetGlobalElapsedTime(m_total_elapsed_time);
                     current_sky.Draw(GraphicsDevice);
                 }
@@ -186,9 +197,10 @@ namespace DarkDescent {
                 m_basic_effect.Projection = m_projection;
                 m_basic_effect.View = m_player.GetView();
                 m_basic_effect.World = Matrix.Identity;
-                m_test_dungeon.DrawDungeonLayoutMeshes(GraphicsDevice, m_basic_effect, m_theme_set);
+                m_test_dungeon.DrawDungeonLayoutMeshes(GraphicsDevice, m_basic_effect, current_theme);
 
                 // 2d map
+#if 0
                 sprite_batch.Begin();
                 for (int y = 0; y < m_test_dungeon.Height; ++y) {
                     for (int x = 0; x < m_test_dungeon.Width; ++x) {
@@ -208,6 +220,7 @@ namespace DarkDescent {
                 }
 
                 sprite_batch.End();
+#endif
             }
         }
 

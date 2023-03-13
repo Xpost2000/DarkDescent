@@ -29,7 +29,8 @@ namespace DarkDescent {
         }
 
         public void SetGlobalElapsedTime(float time) {
-            m_effect.Parameters["GlobalElapsedTime"].SetValue(time);
+            if (m_effect.Parameters["GlobalElapsedTime"] != null)
+                m_effect.Parameters["GlobalElapsedTime"].SetValue(time);
         }
 
         public void Draw(GraphicsDevice device) {

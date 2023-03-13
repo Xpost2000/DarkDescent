@@ -39,7 +39,6 @@ namespace DarkDescent {
         }
 
         public static bool KeyPressedThenReleased(Microsoft.Xna.Framework.Input.Keys key) {
-            UpdateKeyState();
             bool last_down = m_last_key_state.IsKeyDown(key);
             bool current_down = m_current_key_state.IsKeyDown(key);
 
