@@ -45,7 +45,7 @@ namespace DarkDescent {
         private DungeonRoom m_test_dungeon; /*NOTE dungeon rooms should be able to concat with each other*/
         private Player m_player;
 
-        private SpriteBatch sprite_batch;
+        private GameUI m_ui;
         private float AspectRatio() {
             return ((float)m_graphics.PreferredBackBufferWidth / m_graphics.PreferredBackBufferHeight);
         }
@@ -95,8 +95,6 @@ namespace DarkDescent {
             IsFixedTimeStep = true;
             TargetElapsedTime = System.TimeSpan.FromSeconds(1.0 / 20.0);
 
-            sprite_batch = new SpriteBatch(GraphicsDevice);
-
             m_render_target = new RenderTarget2D(
                 GraphicsDevice, 
                 RenderTarget_Width, 
@@ -120,7 +118,7 @@ namespace DarkDescent {
 
         protected override void LoadContent() {
             m_white_texture = Content.Load<Texture2D>("white");
-
+            m_ui = new GameUI(Content, GraphicsDevice, this);
             InitializeEnvironmentSets();
 
             m_postprocess_effect = Content.Load<Effect>("GamePostProcess");
@@ -200,27 +198,8 @@ namespace DarkDescent {
                 m_test_dungeon.DrawDungeonLayoutMeshes(GraphicsDevice, m_basic_effect, current_theme);
 
                 // 2d map
-#if false
-                sprite_batch.Begin();
-                for (int y = 0; y < m_test_dungeon.Height; ++y) {
-                    for (int x = 0; x < m_test_dungeon.Width; ++x) {
-                        if (DungeonRoom.IsSolidTile(m_test_dungeon.GetTile(x, y))) {
-                            sprite_batch.Draw(m_white_texture, new Rectangle(x * 16, y * 16, 16, 16), Color.Red);
-                        } else {
-                            sprite_batch.Draw(m_white_texture, new Rectangle(x * 16, y * 16, 16, 16), Color.Black);
-                        }
-                    }
-                }
-                {
-                    var bb = m_player.GetRectangle();
-                    sprite_batch.Draw(m_white_texture,
-                        new Rectangle((int)(bb.x * 16), (int)(bb.y * 16), (int)(bb.w * 16), (int)(bb.h * 16)), Color.White);
-                    sprite_batch.Draw(m_white_texture,
-                           new Rectangle((int)(m_player.Position.X * 16 - 2), (int)(m_player.Position.Y * 16 - 2), (int)(4), (int)(4)), Color.Green);
-                }
+                m_ui.UpdateRender();
 
-                sprite_batch.End();
-#endif
             }
         }
 

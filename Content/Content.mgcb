@@ -217,6 +217,13 @@
 /processorParam:DebugMode=Auto
 /build:GamePostProcess.fx
 
+#begin UINormal.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:UINormal.spritefont
+
 #begin white.png
 /importer:TextureImporter
 /processor:TextureProcessor
