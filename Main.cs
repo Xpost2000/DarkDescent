@@ -200,7 +200,7 @@ namespace DarkDescent {
                 m_test_dungeon.DrawDungeonLayoutMeshes(GraphicsDevice, m_basic_effect, current_theme);
 
                 // 2d map
-#if 0
+#if false
                 sprite_batch.Begin();
                 for (int y = 0; y < m_test_dungeon.Height; ++y) {
                     for (int x = 0; x < m_test_dungeon.Width; ++x) {
